@@ -1,7 +1,7 @@
 // Use npx live-server for this to function
 
 
-// Global Variables accessable using closure
+// Global Variables accessable by closure
 var log
 var players = []
 var startStacks = {}
@@ -16,7 +16,11 @@ Papa.parse("../pokersession.csv", {
         log = results.data
         console.log(results.data[0].entry)
         // Since papa.parse is Async use this call to ensure log is fully built
-        displayPlayers();
+        $button = $("#generate-results")
+        $button.on("click", function(event){
+            displayPlayers();
+        })
+
     }
 })
 
@@ -32,7 +36,6 @@ function displayPlayers(){
        startStacks[playerName] = playerStack
     }
     if (log[i].entry.includes("quits the game")){
-        console.log("player quit", log[i].entry)
         playerName = extractPlayers(log[i].entry)
         playerStack = parseInt(extractBuyIn(log[i].entry))
         endingStacks[playerName] = playerStack
@@ -53,15 +56,20 @@ function editDom(){
     let startStack = startStacks[playerName]
     let endStack = endingStacks[playerName]
     let profit = endStack - startStack
+    let color = "green"
+    if (profit < 0){
+        color = "red"
+    }
     $main.append(`
       <p>
-        Player ${parseInt(index) + 1}: ${playerName},
+        Player ${parseInt(index) + 1}: <b>${playerName}</b>,
         Buy In: ${startStack},
         Final Stack: ${endStack},
-        Profit: ${profit}
+        <p style='color: ${color}'>Profit: ${profit}</p>
       </p>
     `)
   }
+  $main.append("<img src='/doylepicture.jpeg'/>")
 }
 
 // HELPER FUNCTIONS
