@@ -14,10 +14,7 @@ Papa.parse("../pokersession.csv", {
     download: true,
     complete: function(results){
         log = results.data
-        // console.log(results)
-        // console.log(typeof results.data[0].entry)
         console.log(results.data[0].entry)
-
         // Since papa.parse is Async use this call to ensure log is fully built
         displayPlayers();
     }
@@ -67,9 +64,7 @@ function editDom(){
   }
 }
 
-
 // HELPER FUNCTIONS
-
 // Helper function that extracts the players name from .entry string
 function extractPlayers(string){
     let startIndex = string.indexOf('"')
